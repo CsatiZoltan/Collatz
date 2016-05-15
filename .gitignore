@@ -30,3 +30,17 @@
 
 # Debug files
 *.dSYM/
+
+# Visual Studio specific
+*.ilk
+*.pdb
+*.log
+*.tlog
+*.suo
+*.sdf
+*.opensdf
+*.manifest
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
