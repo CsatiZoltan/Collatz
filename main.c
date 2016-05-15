@@ -1,47 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <omp.h>
+#ifdef _OPENMP
+   #include <omp.h>
+#else
+   #define omp_get_thread_num() 0
+#endif
 
-
-int collatz(long n);
+//void writeToFile(int* result, long nNumber, char* filename);
+//int collatz(long n);
 
 int main(int argc, char* argv[])
 {
 	int nNumber;
 	if (argc == 1)
-		nNumber = 1000000;
+		nNumber = 10000;
 	else
 		nNumber = atoll(argv[1]);
-   /* Open a text file where we save the results */
-   //FILE *fp;
-   //fp = fopen("C:\\Programok\\Portable\\tcc\\collatz.txt","w+");
-   /* Create the header */
-   //fprintf(fp, "  Number\tTotal stopping time\n\n");
+
    /* Loop through some natural numbers */
    long iNumber;
-   int iter;
+   int* iter = malloc(nNumber*sizeof(int));
    #pragma omp parallel for
-   for(iNumber=1; iNumber<=nNumber; iNumber++)
+   for (iNumber=1; iNumber<=nNumber; iNumber++)
    {
-      iter = collatz(iNumber);
-      //fprintf(fp, "  %ld\t\t%d\n", iNumber, iter);
+      iter[iNumber-1] = collatz(iNumber);
    }
-   /* Close the file */
-   //fclose(fp);
-}
-
-int collatz(long n)
-{
-   int i = 0;
-   int isodd; /* 1 if n is odd, 0 if even */
-   while(n > 1)
-   {
-      isodd = n%2;
-      if (isodd)
-         n = 3*n+1;
-      else
-         n/=2;
-      i++;
-   }
-   return i;
+   writeToFile(iter, nNumber, "result.txt");   
+   free(iter);
 }
