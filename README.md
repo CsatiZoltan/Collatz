@@ -43,3 +43,4 @@ to check the conjecture from 1 to *n* or just type the program name without an a
 to test it for the default bound, 10000. If the file writing was successful, the program will create a text file `result.txt` in the directory where the program is invoked from. This file contains the number of steps for each number from 1 to *n*.
 
 ## Measurements
+
