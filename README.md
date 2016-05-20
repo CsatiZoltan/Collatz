@@ -32,13 +32,21 @@ On Linux with GCC:
     gcc -fopenmp -o main main.c collatz.c writeToFile.c
 
 ## Usage
-Open a command prompt in Windows or a terminal in Linux and type
+Open a command prompt in Windows or a terminal in Linux and set the number of threads you want to the program to run on. For it type
 
-   main n
+    set OMP_NUM_THREADS=num
+    
+or in some shells
+
+    export OMP_NUM_THREADS=num
+    
+where *num* is a positive integer. If not set, the default number of threads will be used by OpenMP which is the number of hardware threads (called hyperthreads for Intel processors). After the threads are set, launch the program. For Windows, type
+
+    main n
 
 to check the conjecture from 1 to *n* or just type the program name without an argument
 
-   main
+    main
    
 to test it for the default bound, 10000. If the file writing was successful, the program will create a text file `result.txt` in the directory where the program is invoked from. This file contains the number of steps for each number from 1 to *n*.
 
