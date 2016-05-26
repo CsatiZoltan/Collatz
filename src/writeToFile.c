@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void writeToFile(int* result, long nNumber, char* filename)
+void writeToFile(int* result, int nNumber, char* filename)
 {
    /* Open a text file where we save the results */
    FILE *fp;
