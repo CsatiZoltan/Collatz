@@ -4,21 +4,15 @@
 
 /* Tests the scalability of OpenMP by performing the calculations 
    on different number of threads */
-double* benchmark(int startNumber, int endNumber)
+void benchmark(int startNumber, int endNumber, int maxThreads, double* timings)
 {
-	/* Print the available number of threads */
-	int nThreads;
-	#pragma omp parallel
-	nThreads = omp_get_num_threads();
-	printf("Number of available threads: %d\n", nThreads);
-
+	printf("Number of available threads: %d\n", maxThreads);
 	/* Run the test */
 	int iThread;
 	double timeStart, timeEnd;
 	int nNumbers = endNumber - startNumber + 1;
-	double* timings = malloc(nThreads * sizeof(double));;
 	int* iter = malloc(nNumbers*sizeof(int));
-	for (iThread = 1; iThread <= nThreads; iThread++)
+	for (iThread = 1; iThread <= maxThreads; iThread++)
 	{
 		omp_set_num_threads(iThread);
 		printf("Running the calculation on %d threads ...\n", iThread);
@@ -29,6 +23,5 @@ double* benchmark(int startNumber, int endNumber)
 		timings[iThread - 1] = timeEnd;
 	}
 	free(iter);
-	return timings;
 }
 

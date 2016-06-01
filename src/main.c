@@ -9,11 +9,11 @@
 /* Function declarations */
 void printHelp();
 void writeToFile(int* result, int nNumber, char* filename);
-void benchmark(int startNumber, int endNumber);
+void benchmark(int startNumber, int endNumber, int maxThreads, double* timings);
 
 /* Interface for the computational routine and the file handling */
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
+
 	/* =========== Process command line arguments =========== */
 
 	int i; /* iteration index */
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 	char *flagRequireInputs = "ot"; /* those flags that require at least one additional input */
 	char *flagInputs = "11"; /* required inputs for flags -o, in this order */
 	char *flagIndex; /* position of flag in flagRequireInputs */
-	char outputFileName[200];  /* output location */
+	char outputFileName[200] = "results.txt";  /* output location */
 	int startNumber = 1; /* first number to be checked */
 	int endNumber = 10000; /* last number to be checked */
 
@@ -88,14 +88,27 @@ int main(int argc, char* argv[])
 
 	/* =========== Perform calculations =========== */
 
-	if (bench==1)
-		benchmark(startNumber, endNumber);
+	double* timings;
+	if (bench == 1) {
+		/* Determine the maximum number of threads available */
+		int maxThreads;
+		#pragma omp parallel
+		maxThreads = omp_get_num_threads();
+		double* timings = malloc(maxThreads * sizeof(double));
+		/* Perform benchmark */
+		benchmark(startNumber, endNumber, maxThreads, timings);
+		/* Write the results to text file */
+		for (i = 0; i < 8; i++)
+			printf("%lf\n", timings[i]);
+		free(timings);
+	}
 	else {
 		int nNumbers = endNumber - startNumber + 1;
 		int* iter = malloc(nNumbers*sizeof(int));
 		omp_set_num_threads(nThreads);
 		collatz(startNumber, endNumber, iter, nThreads);
-		writeToFile(iter, nNumbers, "result.txt");
+		/* Write the results to text file */
+		writeToFile(iter, nNumbers, outputFileName);
 		free(iter);
 	}
 }
@@ -104,8 +117,7 @@ int main(int argc, char* argv[])
 
 /* Print help message to screen either if it is directly asked with the -h flag or
 if unexpected syntax is found */
-void printHelp()
-{
+void printHelp() {
 	printf("\nUsage:   Collatz [OPTIONS] startNumber endNumber\n\n");
 	printf("\t OPTIONS\n");
 	printf("\t -a: append the output file instead of overwriting it\n");
