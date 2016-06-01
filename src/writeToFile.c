@@ -1,4 +1,10 @@
+#ifdef _WIN32
+   #define OS 0
+#elif
+
+#endif
 #include <stdio.h>
+#include <stdlib.h>
 
 void writeToFile(int* result, int nNumber, char* filename)
 {
@@ -6,12 +12,23 @@ void writeToFile(int* result, int nNumber, char* filename)
    FILE *fp;
    fp = fopen(filename,"w+");
    if (fp==NULL)
-     printf("File opening was not successful.");
+		printf("File opening was not successful.");
+
    /* Create the header */
    fprintf(fp, "  Number of steps\n\n");
-   long iNumber;
+
+	/* Write the results */
+	long iNumber;
    for(iNumber=1; iNumber <= nNumber; iNumber++)
-      fprintf(fp, "  %d\n", result[iNumber-1]);
-   /* Close the file */
-   fclose(fp);
+		fprintf(fp, "  %d\n", result[iNumber-1]);
+	fclose(fp);
+
+	/* Gather hardware information (experimental) */
+	char systemCommand[200];
+	if (OS == 0) { /* Windows */
+		strcpy(systemCommand, "(echo Processor information: && ");
+		strcat(systemCommand, "echo %Processor_Identifier%) > ");
+		strcat(systemCommand, "systemInfo.txt");
+		system(systemCommand);
+	}
 }
