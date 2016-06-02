@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void writeToFile(int* result, int nNumber, char* filename)
+/* Write Collatz iteration results to file */
+void writeIter(int* result, int startNumber, int endNumber, char* filename)
 {
    /* Open a text file where we save the results */
    FILE *fp;
@@ -13,8 +14,8 @@ void writeToFile(int* result, int nNumber, char* filename)
    fprintf(fp, "  Number of steps\n\n");
 
 	/* Write the results */
-	long iNumber;
-   for(iNumber=1; iNumber <= nNumber; iNumber++)
-		fprintf(fp, "  %d\n", result[iNumber-1]);
+	int iNumber;
+   for(iNumber=startNumber; iNumber <= endNumber; iNumber++)
+		fprintf(fp, "  %d\n", result[iNumber-startNumber]);
 	fclose(fp);
 }
