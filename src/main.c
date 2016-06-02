@@ -8,7 +8,8 @@
 
 /* Function declarations */
 void printHelp();
-void writeToFile(int* result, int nNumber, char* filename);
+void writeIter(int* result, int startNumber, int endNumber, char* filename);
+void writeBench(double* timings, int maxThreads, int startNumber, int endNumber, char* filename);
 void benchmark(int startNumber, int endNumber, int maxThreads, double* timings);
 
 /* Interface for the computational routine and the file handling */
@@ -97,9 +98,8 @@ int main(int argc, char* argv[]) {
 		double* timings = malloc(maxThreads * sizeof(double));
 		/* Perform benchmark */
 		benchmark(startNumber, endNumber, maxThreads, timings);
-		/* Write the results to text file */
-		for (i = 0; i < 8; i++)
-			printf("%lf\n", timings[i]);
+		/* Write the benchmark results to text file */
+		writeBench(timings, maxThreads, startNumber, endNumber, outputFileName);
 		free(timings);
 	}
 	else {
@@ -107,8 +107,8 @@ int main(int argc, char* argv[]) {
 		int* iter = malloc(nNumbers*sizeof(int));
 		omp_set_num_threads(nThreads);
 		collatz(startNumber, endNumber, iter, nThreads);
-		/* Write the results to text file */
-		writeToFile(iter, nNumbers, outputFileName);
+		/* Write the iteration counts to text file */
+		writeIter(iter, startNumber, endNumber, outputFileName);
 		free(iter);
 	}
 }
