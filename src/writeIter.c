@@ -1,8 +1,3 @@
-#ifdef _WIN32
-   #define OS 0
-#elif
-
-#endif
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,13 +17,4 @@ void writeToFile(int* result, int nNumber, char* filename)
    for(iNumber=1; iNumber <= nNumber; iNumber++)
 		fprintf(fp, "  %d\n", result[iNumber-1]);
 	fclose(fp);
-
-	/* Gather hardware information (experimental) */
-	char systemCommand[200];
-	if (OS == 0) { /* Windows */
-		strcpy(systemCommand, "(echo Processor information: && ");
-		strcat(systemCommand, "echo %Processor_Identifier%) > ");
-		strcat(systemCommand, "systemInfo.txt");
-		system(systemCommand);
-	}
 }
