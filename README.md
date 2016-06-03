@@ -21,15 +21,15 @@ Since we cannot write to file parallelly (the threads do not process the numbers
 ## Compilation
 The serial version only needs a C89 capable C compiler. An executable is provided for Windows, compiled with [tcc](http://bellard.org/tcc/). The parallel version requires a compiler which implements OpenMP (e.g. Visual Studion in Windows, GCC on Linux and Intel's compiler on both Windows and Linux). On Windows with the Intel compiler, compile it as
 
-    icl /Qopenmp /O3 main.c collatz.c writeToFile.c
+    icl /Qopenmp /O3 main.c collatz.c benchmark.c writeBench.c -o Collatz.exe
     
 On Windows with the Visual Studio compiler:
 
-    cl main.c collatz.c writeToFile.c
+    cl /openmp /O2 main.c collatz.c benchmark.c writeIter.c writeBench.c /FeCollatz.exe
 
 On Linux with GCC:
 
-    gcc -fopenmp -o main main.c collatz.c writeToFile.c
+    gcc -fopenmp main.c collatz.c benchmark.c writeIter.c writeBench.c -o Collatz
 
 ## Usage
 Open a command prompt in Windows or a terminal in Linux and set the number of threads you want to the program to run on. For it type
@@ -42,11 +42,11 @@ or in some shells
     
 where *num* is a positive integer. If not set, the default number of threads will be used by OpenMP which is the number of hardware threads (called hyperthreads for Intel processors). After the threads are set, launch the program. For Windows, type
 
-    main n
+    Collatz n
 
 to check the conjecture from 1 to *n* or just type the program name without an argument
 
-    main
+    Collatz
    
 to test it for the default bound, 10000. If the file writing was successful, the program will create a text file `result.txt` in the directory where the program is invoked from. This file contains the number of steps for each number from 1 to *n*.
 
