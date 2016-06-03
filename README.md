@@ -21,7 +21,7 @@ Since we cannot write to file parallelly (the threads do not process the numbers
 ## Compilation
 The serial version only needs a C89 capable C compiler. An executable is provided for Windows, compiled with [tcc](http://bellard.org/tcc/). The parallel version requires a compiler which implements OpenMP (e.g. Visual Studion in Windows, GCC on Linux and Intel's compiler on both Windows and Linux). On Windows with the Intel compiler, compile it as
 
-    icl /Qopenmp /O3 main.c collatz.c benchmark.c writeBench.c -o Collatz.exe
+    icl /Qopenmp /O3 main.c collatz.c benchmark.c writeIter.c writeBench.c -o Collatz.exe
     
 On Windows with the Visual Studio compiler:
 
